@@ -1,0 +1,45 @@
+{
+  "name": "@renamed-to/mcp",
+  "version": "0.1.0",
+  "description": "MCP server for renamed.to — AI-powered file renaming, document extraction, and PDF splitting",
+  "type": "module",
+  "bin": {
+    "renamed-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "mcp",
+    "renamed",
+    "file-renaming",
+    "document-extraction",
+    "pdf-split",
+    "ai"
+  ],
+  "author": "Renamed.to",
+  "license": "MIT",
+  "homepage": "https://www.renamed.to",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renamed-to/mcp.renamed.to.git"
+  },
+  "bugs": {
+    "url": "https://github.com/renamed-to/mcp.renamed.to/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.2",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
