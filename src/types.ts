@@ -10,15 +10,7 @@ export interface RenameInput {
   dryRun?: boolean;
 }
 
-/** Input for the extract tool — structured data extraction from documents. */
-export interface ExtractInput {
-  /** Path to the document to extract data from. */
-  filePath: string;
-  /** JSON schema or natural-language description of the data to extract. */
-  schema: string;
-  /** Output format for the extracted data. */
-  outputFormat?: "json" | "csv";
-}
+// TODO: Add ExtractInput when the extract API is publicly available
 
 /** Input for the pdf_split tool — split PDFs by content, bookmarks, or page ranges. */
 export interface PdfSplitInput {
@@ -35,13 +27,11 @@ export interface WatchInput {
   /** Directory to watch for new files. */
   directory: string;
   /** Action to perform on new files. */
-  action: "rename" | "extract" | "pdf-split";
+  action: "rename" | "pdf-split";
   /** Action-specific configuration. */
   config?: {
     /** Format template (for rename action). */
     format?: string;
-    /** Extraction schema (for extract action). */
-    schema?: string;
     /** Split strategy (for pdf-split action). */
     strategy?: "ai" | "bookmarks" | "pages";
   };

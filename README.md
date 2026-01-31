@@ -1,6 +1,6 @@
 # @renamed-to/mcp
 
-MCP (Model Context Protocol) server for [renamed.to](https://www.renamed.to) — an AI-powered file renaming, document extraction, and PDF splitting service. This server exposes renamed.to capabilities as tools that AI assistants like Claude Code, Claude Desktop, and Cursor can use directly.
+MCP (Model Context Protocol) server for [renamed.to](https://www.renamed.to) — AI-powered file renaming and PDF splitting. Exposes renamed.to capabilities as tools for AI assistants like Claude Code, Claude Desktop, Cursor, and Windsurf.
 
 ## Install
 
@@ -51,14 +51,19 @@ Add to your MCP configuration:
 | Tool | Description | Key Inputs |
 | --- | --- | --- |
 | `rename` | Rename files using AI content analysis | `filePaths`, `outputDir?`, `format?`, `dryRun?` |
-| `extract` | Extract structured data from documents | `filePath`, `schema`, `outputFormat?` |
 | `pdf_split` | Split PDFs by content, bookmarks, or pages | `filePath`, `strategy?`, `outputDir?` |
 | `watch` | Watch a directory and auto-process new files | `directory`, `action`, `config?` |
 | `status` | Check auth status and API connectivity | (none) |
 
 ## Authentication
 
-You need a renamed.to account to use this server. Visit [https://www.renamed.to](https://www.renamed.to) to sign up and get your API key.
+You need a renamed.to account. Visit [https://www.renamed.to/sign-up](https://www.renamed.to/sign-up) to get started.
+
+## Related
+
+- [@renamed-to/cli](https://github.com/renamed-to/cli.renamed.to) — CLI tool
+- [@renamed-to/sdk](https://github.com/renamed-to/renamed-sdk) — multi-language SDKs
+- [Claude Code plugin](https://github.com/renamed-to/plugin.renamed.to) — skills for Claude Code
 
 ## License
 

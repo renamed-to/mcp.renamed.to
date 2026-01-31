@@ -64,44 +64,8 @@ server.registerTool(
   }
 );
 
-server.registerTool(
-  "extract",
-  {
-    description:
-      "Extract structured data from documents. Sends a document to the renamed.to API and returns data matching the provided schema.",
-    inputSchema: {
-      filePath: z.string().describe("Path to the document to extract data from"),
-      schema: z
-        .string()
-        .describe(
-          "JSON schema or natural-language description of the data to extract"
-        ),
-      outputFormat: z
-        .enum(["json", "csv"])
-        .optional()
-        .describe("Output format for the extracted data"),
-    },
-  },
-  async ({ filePath, schema, outputFormat }) => {
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: JSON.stringify(
-            {
-              status: "not_implemented",
-              message:
-                "Tool not yet implemented — connect to renamed.to API",
-              args: { filePath, schema, outputFormat },
-            },
-            null,
-            2
-          ),
-        },
-      ],
-    };
-  }
-);
+// TODO: Add extract tool when the extract API is publicly available
+// server.registerTool("extract", ...)
 
 server.registerTool(
   "pdf_split",
@@ -147,11 +111,11 @@ server.registerTool(
   "watch",
   {
     description:
-      "Watch a directory for new files and auto-process them using rename, extract, or pdf-split.",
+      "Watch a directory for new files and auto-process them using rename or pdf-split.",
     inputSchema: {
       directory: z.string().describe("Directory to watch for new files"),
       action: z
-        .enum(["rename", "extract", "pdf-split"])
+        .enum(["rename", "pdf-split"])
         .describe("Action to perform on new files"),
       config: z
         .object({
@@ -159,10 +123,6 @@ server.registerTool(
             .string()
             .optional()
             .describe("Format template (for rename action)"),
-          schema: z
-            .string()
-            .optional()
-            .describe("Extraction schema (for extract action)"),
           strategy: z
             .enum(["ai", "bookmarks", "pages"])
             .optional()
