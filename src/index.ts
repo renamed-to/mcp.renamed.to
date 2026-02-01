@@ -9,7 +9,7 @@ import * as path from "node:path";
 import { getClient, getApiKey } from "./client.js";
 import { mapError } from "./errors.js";
 
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 
 const server = new McpServer({
   name: "renamed-to",
