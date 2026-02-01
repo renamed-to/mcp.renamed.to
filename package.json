@@ -1,6 +1,6 @@
 {
   "name": "@renamed-to/mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for renamed.to — AI-powered file renaming, document extraction, and PDF splitting",
   "type": "module",
   "bin": {
