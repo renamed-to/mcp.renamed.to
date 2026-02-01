@@ -5,14 +5,15 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org)
 
-[Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for [renamed.to](https://www.renamed.to) — expose AI-powered file renaming and PDF splitting as tools for Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible client.
+[Model Context Protocol](https://modelcontextprotocol.io) (MCP) server for [renamed.to](https://www.renamed.to) — bring AI-powered file renaming, organization, and PDF splitting into Claude Code, Claude Desktop, Cursor, Windsurf, and any MCP-compatible client. Tell the AI how you want your files named using plain English — it reads the actual document content (OCR, tables, headers) and follows your instructions.
 
 ## Features
 
-- **AI file renaming** — analyze file contents and generate meaningful filenames automatically
+- **Natural-language prompts** — describe your naming rules in plain English and the AI follows them (per-document-type rules, conditional logic, localization, and more)
+- **AI content analysis** — OCR and NLP extract dates, vendors, amounts, document types, and reference numbers from the actual file contents
 - **PDF splitting** — split PDFs by content/topic (AI), bookmarks, or page ranges
+- **Organization strategies** — auto-sort into folders by year, company, document type, or combinations
 - **Dry-run mode** — preview renames before committing changes
-- **Format templates** — control naming with templates like `"{date} - {title}"`
 - **Multi-platform** — works with Claude Code, Claude Desktop, Cursor, and Windsurf
 
 ## Quick Start
@@ -135,14 +136,33 @@ The server also accepts `RENAMED_TOKEN` as a fallback. Use the `status` tool to 
 
 ### `rename`
 
-Rename files using AI content analysis. Sends files to the renamed.to API which analyzes content and returns intelligent filenames.
+Rename files using AI content analysis. Sends files to the renamed.to API which reads the actual document content — OCR for scans, NLP for text — extracts metadata (dates, vendors, amounts, reference numbers), and generates filenames based on your instructions.
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `filePaths` | `string[]` | Yes | — | Absolute or relative paths to the files to rename |
 | `outputDir` | `string` | No | Source directory | Directory to write renamed files to |
-| `format` | `string` | No | AI-generated | Format template (e.g. `"{date} - {title}"`) |
+| `format` | `string` | No | AI-chosen | Natural-language prompt describing how filenames should be formatted (see [Prompt examples](#prompt-examples) below) |
 | `dryRun` | `boolean` | No | `false` | Preview the rename without writing any files |
+
+#### Prompt examples
+
+The `format` parameter accepts plain English instructions. The AI interprets them and applies them to each file based on its content:
+
+```
+Invoices: {date} - {vendor} - Invoice #{number} - ${amount}
+Contracts: {vendor} - {type} - {date}
+Receipts: {date} - {vendor} - Receipt
+```
+
+You can specify per-document-type rules, conditional logic, localization, and more:
+
+- **Department prefixes** — `"Add HR_ prefix for employment documents, FIN_ for financial records"`
+- **Localization** — `"Use German date format DD.MM.YYYY, translate document types to German"`
+- **Conditional logic** — `"If invoice amount > $1000, add LARGE_ prefix"`
+- **Industry formats** — `"Include matter number for legal documents, client code for accounting"`
+
+When no `format` is provided, the AI automatically selects the best naming pattern for each document.
 
 <details>
 <summary>Example output</summary>
@@ -165,7 +185,7 @@ Rename files using AI content analysis. Sends files to the renamed.to API which 
 
 ### `pdf_split`
 
-Split PDFs by content or topic using AI, by bookmarks, or by page ranges. Sends the PDF to the renamed.to API for processing.
+Split PDFs by content or topic using AI, by bookmarks, or by page ranges. The AI reads the full document, identifies logical sections and topic boundaries, and creates individually named PDFs for each.
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
@@ -252,19 +272,25 @@ Check authentication status and API connectivity. Takes no parameters.
 
 > "Rename all the PDFs in my Downloads folder based on their content"
 
-Invokes `rename` with the file paths. The API analyzes each file and suggests meaningful names like `2024-03-15 - Quarterly Report Q1.pdf`.
+The AI reads each file — even scanned images via OCR — extracts dates, vendors, document types, and generates descriptive names like `2024-03-15 - Quarterly Report Q1.pdf`.
+
+**Use natural-language rules for different document types:**
+
+> "Rename these files. For invoices use '{date} - {vendor} - Invoice #{number}', for contracts use '{vendor} - {type} - {date}', and add a LARGE_ prefix if the amount is over $1000"
+
+The AI applies different naming rules per document type, with conditional logic, all from a single plain-English prompt.
 
 **Split a long report into separate documents by topic:**
 
 > "Split this 50-page annual report into separate documents by topic"
 
-Invokes `pdf_split` with `strategy: "ai"`. The API identifies logical sections and creates individual PDFs for each.
+The AI analyzes content boundaries and creates individually named PDFs for each logical section — no bookmarks required.
 
-**Preview renames with a custom format:**
+**Preview renames with localized formatting:**
 
-> "Do a dry run rename of these invoices using the format '{date} - {vendor} - {amount}'"
+> "Do a dry run rename of these invoices using German date format DD.MM.YYYY and translate document types to German"
 
-Invokes `rename` with `dryRun: true` and `format: "{date} - {vendor} - {amount}"`. Shows what the new filenames would be without moving any files.
+Shows what the new filenames would be without moving any files. The AI handles localization and translation in the naming.
 
 ## Error Handling
 
